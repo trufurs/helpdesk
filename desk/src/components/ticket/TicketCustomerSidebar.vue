@@ -189,6 +189,8 @@ const ticketBasicInfo = computed(() => [
   },
 ]);
 
+import { parseField } from "@/composables/formCustomisation";
+
 const ticketAdditionalInfo = computed(() => {
   const fields = [
     {
@@ -210,6 +212,8 @@ const ticketAdditionalInfo = computed(() => {
         !field.hide_from_customer &&
         ["subject", "team", "priority"].indexOf(field.fieldname) === -1
     )
+    .map((field: Field) => parseField(field, ticket.data))
+    .filter((field: Field) => field.display_via_depends_on)
     .map((field: Field) => ({
       label: field.label,
       value: ticket.data[field.fieldname],
